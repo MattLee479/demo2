@@ -789,6 +789,9 @@ section {
 
 /* Stack only under ~900px */
 @media (max-width: 900px){
+    .hero .container{
+    padding-right: calc(var(--container-padding) + 24px);
+    }
   .hero-content{ display:block; }
   .hero-book{
     grid-column: auto;
