@@ -232,10 +232,20 @@ body{ padding-top: var(--nav-h); }
   gap: var(--space-xl);
   align-items: center;
 }
-.hero-book{ justify-self: end; } /* nudge book to the right */
+/* Keep the book on the right */
+.hero-book{
+  grid-column: 2;
+  grid-row: 1 / span 5;  /* span title → buttons */
+  justify-self: end;
+  align-self: start;
+  margin: 0;
+}
 
 .hero-content {
-    z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 420px;   /* text | book */
+  column-gap: var(--space-xl);
+  align-items: start;
 }
 
 .hero-title {
@@ -777,53 +787,16 @@ section {
 .footer-logo { display:flex; align-items:center; gap: 8px; margin: 0; }
 .footer-logo img { height: 24px; width:auto; display:block; }
 
+/* Stack only under ~900px */
 @media (max-width: 900px){
-  .hero .container{
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
+  .hero-content{ display:block; }
   .hero-book{
-    order: -1;                 /* book above the buttons on phones */
+    grid-column: auto;
+    grid-row: auto;
+    order: -1;                       /* book above buttons on phones */
     justify-self: center;
     margin: var(--space-l) auto var(--space-m);
   }
-}
-
-/* ===== Desktop hero layout (book to the right) ===== */
-@media (min-width: 992px){
-  /* make the hero content a 2-col grid */
-  .hero-content{
-    display: grid;
-    grid-template-columns: 1fr 420px;   /* text | book */
-    column-gap: var(--space-xl);
-    align-items: start;
-  }
-  .hero-title,
-  .hero-subtitle,
-  .hero-author,
-  .hero-description,
-  .hero-buttons { grid-column: 1; }
-
-  .hero-book{
-    grid-column: 2;
-    grid-row: 1 / span 4;
-    margin: 0;
-    justify-self: end;                  /* nudge to the right edge */
-  }
-}
-
-/* Phones & tablets (stack everything) */
-@media (max-width: 991px){
-  .hero-content{ display: block; }
-  .hero-book{
-    margin: var(--space-l) auto var(--space-m);
-  }
-  .book-cover{
-    width: clamp(220px, 70vw, 320px);
-    height: auto;
-    transform: none;                     /* no tilt on smaller screens */
-  }
-  .hero-buttons{ margin-top: var(--space-l); justify-content: center; }
 }
 
 /* Mobile Responsiveness */
