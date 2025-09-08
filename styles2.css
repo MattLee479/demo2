@@ -227,7 +227,7 @@ body{ padding-top: var(--nav-h); }
 }
 
 .hero .container {
-    display: grid;
+    display: block;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-xl);
     align-items: center;
@@ -777,38 +777,40 @@ section {
 .footer-logo img { height: 24px; width:auto; display:block; }
 
 /* ===== Desktop hero layout (book to the right) ===== */
-@media (min-width: 768px){
+@media (min-width: 992px){
   /* make the hero content a 2-col grid */
   .hero-content{
     display: grid;
-    grid-template-columns: 1fr 420px; /* left text | right book */
+    grid-template-columns: 1fr 420px;   /* text | book */
     column-gap: var(--space-xl);
     align-items: start;
   }
-
-  /* place elements in the left column by default */
   .hero-title,
   .hero-subtitle,
   .hero-author,
   .hero-description,
-  .hero-buttons{
-    grid-column: 1;
-  }
+  .hero-buttons { grid-column: 1; }
 
-  /* park the book in the right column, aligned with the titles */
   .hero-book{
     grid-column: 2;
-    grid-row: 1 / span 4;      /* it spans alongside the text block */
-    margin: 0;                 /* remove mobile spacing */
-    justify-self: end;       /* keep it aligned to the grid */
+    grid-row: 1 / span 4;
+    margin: 0;
+    justify-self: end;                  /* nudge to the right edge */
   }
+}
 
-  /* restore the desktop tilt/size */
-  .book-cover{
-    width: 320px;
-    height: 480px;
-    transform: perspective(1000px) rotateY(-15deg);
+/* Phones & tablets (stack everything) */
+@media (max-width: 991px){
+  .hero-content{ display: block; }
+  .hero-book{
+    margin: var(--space-l) auto var(--space-m);
   }
+  .book-cover{
+    width: clamp(220px, 70vw, 320px);
+    height: auto;
+    transform: none;                     /* no tilt on smaller screens */
+  }
+  .hero-buttons{ margin-top: var(--space-l); justify-content: center; }
 }
 
 /* Mobile Responsiveness */
