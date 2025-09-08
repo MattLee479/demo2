@@ -777,7 +777,7 @@ section {
 .footer-logo img { height: 24px; width:auto; display:block; }
 
 /* ===== Desktop hero layout (book to the right) ===== */
-@media (min-width: 992px){
+@media (min-width: 768px){
   /* make the hero content a 2-col grid */
   .hero-content{
     display: grid;
