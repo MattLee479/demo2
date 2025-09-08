@@ -49,31 +49,31 @@
     <section id="home" class="hero">
         <div class="hero-background"></div>
         <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">The Jade Pandora</h1>
-                <h2 class="hero-subtitle">Two Kings, One Throne</h2>
-                <p class="hero-author">by A.D. Stevens</p>
-                
-                <div class="hero-description">
-                    <p class="hero-tagline">A humble farm boy. A weapon of the gods. A destiny that could save—or shatter—the world.</p>
-                </div>
-                
-                <div class="hero-buttons">
-                    <button class="btn btn-primary">Get Your Copy</button>
-                    <button class="btn btn-secondary">Read Sample</button>
-                </div>
-            </div>
-            
-            <div class="hero-book">
-                <div class="book-cover">
-                    <div class="book-spine"></div>
-                    <img src="assets/cover.png" class="book-front">
-                        <div class="book-title">The Jade Pandora</div>
-                        <div class="book-author">A.D. Stevens</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="hero-content">
+    <h1 class="hero-title">The Jade Pandora</h1>
+    <h2 class="hero-subtitle">Two Kings, One Throne</h2>
+    <p class="hero-author">by A.D. Stevens</p>
+
+    <div class="hero-description">
+      <p class="hero-tagline">
+        A humble farm boy. A weapon of the gods. A destiny that could save—or shatter—the world.
+      </p>
+    </div>
+
+    <!-- 🔻 Moved INSIDE hero-content and placed above buttons -->
+    <div class="hero-book">
+      <div class="book-cover">
+        <div class="book-spine"></div>
+        <img src="assets/cover.png" class="book-front" alt="The Jade Pandora book cover">
+      </div>
+    </div>
+
+    <div class="hero-buttons">
+      <button class="btn btn-primary">Get Your Copy</button>
+      <button id="readSampleBtn" class="btn btn-secondary">Read Sample</button>
+    </div>
+  </div>
+</div>
         
         <div class="sword-divider"></div>
     </section>
@@ -116,14 +116,14 @@
                     <div class="character-image lemma"></div>
                     <h3 class="character-name">Lemma of Sciran</h3>
                     <p class="character-weapon">Guardian of Ancient Secrets</p>
-                    <p class="character-description">A skilled warrior whose destiny intertwines with the legendary Rysendar relics.</p>
+                    <p class="character-description"> A warrior for her people and the heir to the throne of Sciran. Current holder of The Star of Sciran.</p>
                 </div>
                 
                 <div class="character-card">
                     <div class="character-image cathal"></div>
                     <h3 class="character-name">Cathal of Vastuk</h3>
                     <p class="character-weapon">Master of the Third Relic</p>
-                    <p class="character-description">The final member of the trinity, whose choices will determine the fate of two kingdoms.</p>
+                    <p class="character-description">A warrior of a forgotten land, and lore of a bygone age. Keeper of the staff of Angelus.</p>
                 </div>
             </div>
         </div>
@@ -145,12 +145,12 @@
                             <span class="relic-description">A sword of living fire, capable of cutting through both flesh and shadow</span>
                         </div>
                         <div class="relic-item">
-                            <span class="relic-name">The Jade Pandora</span>
-                            <span class="relic-description">A mysterious artifact that holds the power to unlock—or seal—ancient forces</span>
+                            <span class="relic-name">Star of Sciran</span>
+                            <span class="relic-description">A large five-bladed throwing star, control of the powers of lightning</span>
                         </div>
                         <div class="relic-item">
-                            <span class="relic-name">The Third Relic</span>
-                            <span class="relic-description">Its true name lost to time, its power yet to be revealed</span>
+                            <span class="relic-name">Staff of Angelus</span>
+                            <span class="relic-description">Lost to time or realm unknown, powers yet to be revealed </span>
                         </div>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Contact Section --> 
     <section id="contact" class="contact">
         <div class="container">
             <h2 class="section-title">Join the Quest</h2>
@@ -196,7 +196,7 @@
     <!-- Top -->
     <div class="footer-top">
       <div class="footer-column">
-        <h3 class="footer-title">A D Stephens</h3>
+        <h3 class="footer-title">A D Stevens</h3>
         <p>Sword and Sorcery Fantasy Author</p>
       </div>
 
@@ -213,16 +213,52 @@
 
       <div class="footer-column">
         <h4>Connect With Us</h4>
-        <div class="social-links">
-          <p href="https://www.instagram.com/hudsonnailss/" aria-label="Instagram">Follow us on Instagram</p>
-          <p href="https://www.instagram.com/hudsonnailss/" aria-label="TikTok">Follow us on TikTok</p>
-        </div>
+<div class="social-links">
+  <a class="btn-tiktok" href="https://www.tiktok.com/@ad_stevens_author?lang=en">Follow us on TikTok</a>
+  <a class="btn-goodreads" href="https://www.goodreads.com/">Review My Goodreads</a>
+</div>
       </div>
     </div>
 
+<!-- Read Sample Modal -->
+<div class="sample-modal" id="sampleModal" aria-hidden="true" role="dialog" aria-labelledby="sampleTitle">
+  <div class="sample-backdrop" data-close></div>
+
+  <article class="sample-paper" role="document" tabindex="-1">
+    <header class="sample-header">
+      <h2 id="sampleTitle">Prologue</h2>
+      <button class="sample-close" aria-label="Close sample" data-close>&times;</button>
+    </header>
+
+    <div class="sample-body">
+      <p>Zenith walked these fields daily, his family's land, a land where gods had walked in ages past—the place of many ancient stories that had never been told or had yet to unfold.</p>
+      <p>Another ordinary spring day, working hard in the soil getting the field ready for sowing, moving his Mullok-drawn plough in lines, turning the earth, preparing it to plant the next crop. He spent this time far from his stepbrother, Merrik, and the other farmhands, especially on days when he felt like reminiscing about his father. Often pondering how different it could have been for him and his brother had tragedy not struck all those years ago, stealing their parents from them. Under mysterious circumstances, a sudden, unexplained plague took not only them but many others from the village.</p>
+      <p>This occurred after the loss of his grandfather, only six months prior. There wandering, following the plough in its straight-line monotony from one end of the field to the other, thinking more as he laboured step after step in the fields, getting ready to produce a bountiful harvest year after year.</p>
+      <p>His father, Ake, would often say, “Your mother, Zenith, was worth more than any throne in the world. I quite happily traded my crown for Calluses and never needed to look back.”</p>
+      <p>Ake was always one to be among the people, enjoying life before ascending the throne. Living as a village farmer to be with their mother. The woman who had captured his heart falling deeply in love, whilst out to meet the people as an envoy to the throne. Ake was truly a prince among men. The people of Grissam reflected this in the stories and memories they shared. Ake had fallen for their mother in a heartbeat, instantly refusing to leave Grissam from that very day to be with her always.</p>
+      <p>This was the way his father always told it, possibly to make it seem more fantastical and romantic as a bedtime story for him and Merrik</p>
+      <p>Ake had spent years building the farm with his own hands, never seeking handouts from Zenith’s grandfather, King Barathor. Ake never used his rank as a reason to shy away from hard graft.</p>
+      <p>Zenith fondly remembered the years he had spent watching with his stepbrother, learning from their father about the life he had chosen. Zenith never got any sense that Ake lacked completeness in his choice.</p>
+      <p>Laughing to himself as he remembered his father's mantra. A man must follow his heart first, feelings second and his duty third. Easier said than done when you're knee deep in a muddy field, following a Mullock’s arse.</p>
+      <p>This advice had always guided him well enough and was one of the main reasons that Zenith never envied his uncle the king. The king saw them as commoners and completely ignored them. Even though Zenith didn’t envy his uncle’s lofty status, he didn’t know him, nor want to; even as a child, they had never interacted. His uncle Quinten wasn’t the most caring of people; in fact, most would say he was materialistic and selfish.</p>
+      <p>Although he had a right to be royal by blood and could claim the titles and estates of his late father, he saw no point; he had his remaining family around him, which was all that mattered.</p>
+      <p>His mother and father had loved him dearly, and so had their grandfather, the previous king. He visited his grandfather many times with Ake whilst he was alive. The time he spent with Barathor was always intriguing and fun. Ultimately, they would always return to Grissam; the luxury of royalty never suited his or Ake’s free spirits and love of nature.</p>
+      <p>Whilst on his deathbed, his grandfather announced that he would be passing the throne to his father’s younger, inexperienced, less qualified brother, Quinten. This was unprecedented. Quinten had never been for, or of, the people. King Barathor knew this; many speculated that his death was the result of foul play and that he had been forced into declaring Quinten as his successor to the throne, but no proof was ever found.</p>
+      <p>Even with his family history, this life suited him fine. Days of hard labour tending to the fields, doing what was necessary to yield the best crop.</p>
+      <p>Nights practising his husbandry skills, taming beasts of all types from the wilds surrounding the village limits, using them to improve the people’s lives or releasing them as needed. Simple creatures like the winged squirrel, which the smiths always wanted for their ability to harness the wind element, and the wild cats, which they domesticated to hunt mice and other small animals in the barns and buildings. Other larger creatures, such as boars and bears, would be used to maintain the forest's equilibrium under the foresters as protectors.</p>
+      <p>A skill he had become well known for, as no others could match him, even veteran tamers. It was a skill he’d had since birth; nobody knew why. It was like he had been born for more than a farmer's life. He often felt a sense of longing for more. A vast part of who he was seemed outside of his grasp.</p>
+      <p>It was as if he had a task in life that he had yet to fulfil, something that made him want to leave, but had not given him reason to. If the choice did come, he didn’t know if he genuinely wanted it; it would mean leaving all he knew and loved.</p>
+      <p>The sun hit harder as midday arrived, bringing him out of his thoughts. His thirst was genuinely beginning to devour him, forcing him to stop and walk to the field's edge. Picking up his skin of water, placing it up to his dry lips, his Adam's apple permeating the skin of his throat whilst gulping and drinking deeply. A voice came from the distance. He didn’t hear them clearly, just a muffled sound on the wind.</p>
+      <p>Turning around, he saw him. A man stood tall and proud, covered entirely by a red hooded robe, with a large staff in one hand and a sheathed sword in the other.</p>
+      <p>Zenith, confused and a little off guard, stared at the hooded figure. He called out to him, receiving no response. Zenith attempted to return to his work. He sensed no ill intent in the air around them, as if the man wasn’t really present. Zenith found he was becoming intrigued by him and approached. That led to one of the most essential gifts he would ever receive, the Echidna Flame.</p>
+      <p>This would see Zenith leave his beloved home to seek new friends, encounter mythical beasts and face all manner of horrific creatures, in the quest to truly become one with his newfound powers and fight alongside those he loved.</p>
+    </div>
+  </article>
+</div>
+
     <!-- Bottom -->
 <div class="footer-bottom">
-  <span>© 2025 A D Steohens. All rights reserved.</span>
+  <span>© 2025 A D Stevens. All rights reserved.</span>
   <span class="dot" aria-hidden="true">·</span>
 
   <!-- Logo-only credit -->
@@ -236,4 +272,54 @@
 
 </footer>
 </body>
+
+<script>
+(() => {
+  const modal  = document.getElementById('sampleModal');
+  const openBtn = document.getElementById('readSampleBtn') || document.querySelector('.js-read-sample');
+  const closeEls = () => modal.querySelectorAll('[data-close]');
+  let lastFocused = null;
+
+  if (!modal || !openBtn) return;
+
+  const focusableSel = 'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])';
+
+  function openSample(){
+    lastFocused = document.activeElement;
+    modal.classList.add('is-open');
+    document.body.classList.add('no-scroll');
+    // focus first focusable inside paper
+    const first = modal.querySelector('.sample-paper').querySelector(focusableSel);
+    (first || modal.querySelector('.sample-paper')).focus();
+    modal.setAttribute('aria-hidden','false');
+    document.addEventListener('keydown', onKeydown);
+  }
+
+  function closeSample(){
+    modal.classList.remove('is-open');
+    document.body.classList.remove('no-scroll');
+    modal.setAttribute('aria-hidden','true');
+    document.removeEventListener('keydown', onKeydown);
+    if (lastFocused) lastFocused.focus();
+  }
+
+  function onKeydown(e){
+    if (e.key === 'Escape') closeSample();
+
+    // simple focus trap
+    if (e.key === 'Tab'){
+      const focusables = modal.querySelectorAll(focusableSel);
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last  = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  }
+
+  openBtn.addEventListener('click', (e) => { e.preventDefault(); openSample(); });
+  closeEls().forEach(el => el.addEventListener('click', closeSample));
+})();
+</script>
+
 </html>

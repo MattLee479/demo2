@@ -776,26 +776,67 @@ section {
 .footer-logo { display:flex; align-items:center; gap: 8px; margin: 0; }
 .footer-logo img { height: 24px; width:auto; display:block; }
 
+/* ===== Desktop hero layout (book to the right) ===== */
+@media (min-width: 992px){
+  /* make the hero content a 2-col grid */
+  .hero-content{
+    display: grid;
+    grid-template-columns: 1fr 420px; /* left text | right book */
+    column-gap: var(--space-xl);
+    align-items: start;
+  }
+
+  /* place elements in the left column by default */
+  .hero-title,
+  .hero-subtitle,
+  .hero-author,
+  .hero-description,
+  .hero-buttons{
+    grid-column: 1;
+  }
+
+  /* park the book in the right column, aligned with the titles */
+  .hero-book{
+    grid-column: 2;
+    grid-row: 1 / span 4;      /* it spans alongside the text block */
+    margin: 0;                 /* remove mobile spacing */
+    justify-self: end;       /* keep it aligned to the grid */
+  }
+
+  /* restore the desktop tilt/size */
+  .book-cover{
+    width: 320px;
+    height: 480px;
+    transform: perspective(1000px) rotateY(-15deg);
+  }
+}
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
 
     .hero .container {
-        grid-template-columns: 1fr;
+        display: block;
         text-align: center;
     }
     
     .hero-book {
-        order: -1;
-        margin-bottom: var(--space-l);
+        margin: var(--space-l) auto var(--space-m);
     }
     
     .book-cover {
-        width: 250px;
-        height: 375px;
+    width: clamp(220px, 70vw, 300px);
+    height: auto;                    /* let aspect-ratio control it */
+    transform: none;  
     }
+   
+    .book-front{
+    aspect-ratio: 2 / 3;
+    width: 100%;
+    height: auto;
+  }
     
     .hero-buttons {
+        margin-top: var(--space-l); 
         justify-content: center;
     }
     
@@ -857,6 +898,260 @@ section {
     animation: cursorTrail 0.6s ease-out;
     pointer-events: none;
 }
+
+/* --- Social buttons: stack + identical size --- */
+.footer-column .social-links{
+  display: flex;
+  flex-direction: column;         /* stack one under the other */
+  align-items: center;            /* center the block */
+  gap: var(--spacing-m);          /* uniform gap between buttons */
+  width: 260px;                   /* shared width for both buttons */
+  margin: var(--spacing-m) auto 0;
+}
+
+.footer-column .social-links a{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;                    /* take the 260px from parent */
+  height: 44px;                   /* shared height */
+  padding: 0 16px;                /* keep text away from edges */
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;                    /* consistent text colour */
+  text-decoration: none;
+  transition: transform .2s ease, opacity .2s ease, filter .2s ease;
+}
+
+/* make the heading–buttons spacing feel right */
+.footer-column h4{ margin-bottom: var(--spacing-l); }
+
+/* Individual looks (keep your gradients or swap as you like) */
+.social-links .btn-tiktok{
+  background: linear-gradient(45deg,#FE2C55,#222121,#25F4EE);
+}
+.social-links .btn-goodreads{
+  background: linear-gradient(45deg,#e9e5cd,#75420e,#553b08);
+}
+
+.footer-column .social-links a:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
+/* ===== Read Sample Modal ===== */
+:root{
+  /* fallbacks if your tokens aren't present */
+  --paper-bg: #f4ecd8;
+  --paper-ink: #1b1b1b;
+  --paper-edge: #c7b58a;
+  --ink-muted: #3d3d3d;
+}
+
+body.no-scroll { overflow: hidden; }
+
+/* Container & backdrop */
+.sample-modal{
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  z-index: 9999;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
+}
+.sample-modal.is-open{
+  opacity: 1; pointer-events: auto;
+}
+.sample-backdrop{
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(2px);
+}
+
+/* Paper */
+.sample-paper{
+  position: relative;
+  width: min(900px, 92vw);
+  height: min(85vh, 980px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,.25)) ,
+    #f4ecd8;
+ color: #2b2113;
+  border: 1px solid var(--paper-edge);
+  border-radius: 14px;
+  box-shadow:
+    0 40px 100px rgba(0,0,0,.55),
+    0 2px 0 rgba(0,0,0,.18) inset,
+    0 1px 0 rgba(255,255,255,.45) inset;
+  overflow: hidden;
+  outline: none;
+}
+
+/* Close button contrast + hover */
+.sample-close{
+  position: absolute;                 /* positions relative to .sample-header */
+  top: 10px;
+  right: 12px;
+  z-index: 3;
+  width: 40px; height: 40px;
+  border: 1px solid #cdbA84;
+  border-radius: 50%;
+  background: #e7dab3;
+  color: #32250e;
+  font: 700 24px/1 Inter, system-ui, sans-serif;   /* make the × crisp */
+}
+
+/* if the × ever looks odd, force normal text fill */
+.sample-close{ -webkit-text-fill-color: currentColor; }
+
+/* Faux deckle & margin lines */
+.sample-paper::before{
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0 36px,
+    rgba(0,0,0,.015) 36px 37px
+  );
+  pointer-events: none;
+}
+.sample-paper::after{
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.25) inset;
+  pointer-events: none;
+}
+
+
+/* Bigger, darker body text with comfortable measure */
+.sample-body{
+  color: #2b2113;
+  font-size: clamp(17px, 1.9vw, 19px);
+  line-height: 1.75;
+  max-width: 68ch;                 /* ideal reading width */
+  margin: 0 auto;                  /* center the text block */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+.sample-body p{ margin: 0 0 1.05rem; }
+.sample-body p + p{ text-indent: 1.25em; }
+
+/* Tasteful drop cap on the first paragraph */
+.sample-body p:first-of-type::first-letter{
+  float: left;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 2.6em;
+  line-height: .9;
+  padding-right: .08em;
+  color: #b07a27;                  /* warm ink accent */
+  text-shadow: 0 1px 0 #fff8;
+}
+
+/* --- Modal readability fixes --- */
+/* Put paper content above the decorative layers */
+.sample-paper { position: relative; padding: 24px clamp(16px, 4vw, 40px); }
+.sample-paper::before,
+.sample-paper::after { z-index: 0; }
+.sample-paper > * { position: relative; z-index: 1; }
+
+/* Make the backdrop darker so the hero doesn't shine through */
+.sample-backdrop{
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(2px);
+}
+
+/* Ensure body text uses dark ink (override global p { ... }) */
+.sample-body,
+.sample-body p { color: #2b2113 !important; }
+
+/* Comfortable reading area and scrolling */
+.sample-body{
+  font-size: clamp(17px, 1.9vw, 19px);
+  line-height: 1.75;
+  max-width: 68ch;
+  margin: 0 auto;
+  height: calc(100% - 72px);   /* space below header */
+  overflow: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.sample-body p{ margin: 0 0 1.05rem; }
+.sample-body p + p{ text-indent: 1.25em; }
+
+/* Softer ruling lines UNDER the text */
+.sample-paper::before{
+  content: "";
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(180deg, transparent 0 36px, rgba(0,0,0,.04) 36px 37px);
+  opacity: .25;      /* lighter */
+  pointer-events: none;
+}
+
+/* Header polish */
+.sample-header{
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align: center;                 /* ⬅️ center the title */
+  padding: 12px 56px 18px 16px;       /* extra right padding so the × doesn't overlap */
+  background: linear-gradient(#f4ecd8,#eaddbf);
+  border-bottom: 1px solid #cdbA84;
+}
+.sample-header h2{
+  margin: 0;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(26px, 4.2vw, 36px);
+  letter-spacing: .08em;
+  display: inline-block;  
+  position: relative;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #69551e 0%, #b9964e 50%, #6d5813 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.sample-header h2::after {
+  content:"";
+  position:absolute;
+  bottom:-10px;
+  left:50%;                       /* center relative to the word */
+  transform:translateX(-50%);
+  width: 100%;                    /* underline same width as the word */
+  max-width: 200px;               /* optional: limit max length */
+  height:2px;
+  background: linear-gradient(90deg, #69551e 0%, #b9964e 50%, #6d5813 100%);
+  border-radius: 2px;
+}
+
+/* Drop cap (kept) */
+.sample-body p:first-of-type::first-letter{
+  float: left; font-family: 'Cinzel Decorative', serif;
+  font-size: 2.6em; line-height: .9; padding-right: .08em;
+  color: #b07a27; text-shadow: 0 1px 0 #fff8;
+}
+
+/* Close button contrast */
+.sample-close{
+  background: #e7dab3; color: #32250e; border: 1px solid #cdbA84;
+}
+
+/* Mobile tweaks */
+@media (max-width: 520px){
+  .sample-paper{ padding: 16px 14px 18px; }
+  .sample-body{ font-size: 17px; line-height: 1.7; max-width: 60ch; height: calc(100% - 64px); }
+}
+
+
+/* Goodreads theme – warm, bookish colors */
+.social-links .btn-goodreads {
+  background: linear-gradient(45deg, #A6783D, #C19A6B, #E7C27D);
+  color: #2E1E0F; /* dark text for readability */
+}
+.social-links .btn-goodreads:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
 
 @media (max-width: 480px){
   .footer-bottom{ gap:10px; }
