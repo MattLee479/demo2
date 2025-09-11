@@ -443,13 +443,13 @@ section {
     background: linear-gradient(90deg, transparent 0%, var(--jade-glow) 50%, transparent 100%);
 }
 
-/* About Section */
-.about {
+/* About Book Section */
+.aboutB {
     background: var(--ash-gray);
     position: relative;
 }
 
-.about::before {
+.aboutB::before {
     content: '';
     position: absolute;
     top: 0;
@@ -460,7 +460,7 @@ section {
         radial-gradient(circle at 30% 70%, rgba(214, 198, 159, 0.05) 0%, transparent 50%);
 }
 
-.about-content {
+.aboutB-content {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
@@ -637,7 +637,7 @@ section {
 
 /* Contact Section */
 .contact {
-    background: var(--obsidian-black);
+    background: var(--ash-gray);
 }
 
 .contact-content {
@@ -669,7 +669,7 @@ section {
 .form-group textarea {
     width: 100%;
     padding: 14px;
-    background: var(--ash-gray);
+    background: var(--obsidian-black);
     border: 1px solid var(--parchment-gold);
     border-radius: 6px;
     color: var(--white-mist);
@@ -688,6 +688,65 @@ section {
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
+}
+
+/* About Section */
+.about-section {
+    padding: 80px 0;
+    background-color: var(--obsidian-black)
+}
+
+.about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.author-card {
+    background-color: var(--ash-gray);
+border-color: var(--molten-ember);
+box-shadow: 0 0 10px rgba(226, 88, 34, 0.3);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 48px;
+}
+
+.author-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: center;
+}
+
+.author-photo {
+ width: 100%;
+  max-width: 320px;
+  height: auto;                /* remove fixed 320px */
+  aspect-ratio: 3/4;           /* keeps square shape if you want */
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+.author-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.author-description {
+    color: #cbd5e1;
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+/* On desktop, restore two-column layout */
+@media (min-width: 900px) {
+  .author-info {
+    grid-template-columns: minmax(220px, 320px) 1fr;
+    gap: 32px;
+    align-items: center;
+  }
 }
 
 /* Footer (single source of truth) */
@@ -1127,12 +1186,36 @@ body.no-scroll { overflow: hidden; }
   background: #e7dab3; color: #32250e; border: 1px solid #cdbA84;
 }
 
+/* safer drop-cap defaults */
+.sample-body p:first-of-type{
+  overflow: hidden;           /* contains the floated letter */
+  text-indent: 0;             /* ensure no extra indent with the drop cap */
+}
+.sample-body p:first-of-type::first-letter{
+  float: left;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(2.2rem, 7vw, 3.1rem);
+  line-height: .9;
+  margin: .06em .18em 0 0;    /* give text some breathing room */
+  padding: 0;                  /* avoid extra push into lines */
+  color: #b07a27;
+  text-shadow: 0 1px 0 #fff8;
+}
+
 /* Mobile tweaks */
 @media (max-width: 520px){
   .sample-paper{ padding: 16px 14px 18px; }
   .sample-body{ font-size: 17px; line-height: 1.7; max-width: 60ch; height: calc(100% - 64px); }
 }
 
+/* on small phones, just turn the drop-cap into a normal first letter */
+@media (max-width: 480px){
+  .sample-body p:first-of-type::first-letter{
+    float: none;
+    font-size: 1em;           /* same as body text */
+    margin: 0;
+  }
+}
 
 /* Goodreads theme – warm, bookish colors */
 .social-links .btn-goodreads {
