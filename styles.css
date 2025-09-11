@@ -703,7 +703,7 @@ section {
 
 .author-card {
     background-color: var(--ash-gray);
-border-color: var(--molten-ember);
+    border: 2px solid var(--parchment-gold);
 box-shadow: 0 0 10px rgba(226, 88, 34, 0.3);
     border-radius: 12px;
     padding: 32px;
@@ -991,6 +991,8 @@ box-shadow: 0 0 10px rgba(226, 88, 34, 0.3);
   filter: brightness(1.05);
 }
 
+
+
 /* ===== Read Sample Modal ===== */
 :root{
   /* fallbacks if your tokens aren't present */
@@ -1214,6 +1216,123 @@ body.no-scroll { overflow: hidden; }
     float: none;
     font-size: 1em;           /* same as body text */
     margin: 0;
+  }
+}
+
+/* === Scroll skin === */
+.scroll-skin{
+  border-radius: 0;                    /* scrolls are squarer */
+  border: 0;
+  background:
+    linear-gradient(180deg, #f5ecd4, #efe3c0 40%, #f5ecd4),  /* parchment base */
+    radial-gradient( at 50% 0%, rgba(255,255,255,.45), transparent 60%); /* soft sheen */
+  box-shadow:
+    0 40px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(110,85,30,.25) inset,
+    0 12px 18px rgba(0,0,0,.08) inset;
+  /* slightly narrower to feel scroll-like */
+  width: min(780px, 90vw);
+}
+
+/* subtle parchment fibers */
+.scroll-skin::before{
+  content:"";
+  position:absolute; inset: 10px 8px;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.03) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg, rgba(0,0,0,.02) 0 2px, transparent 2px 6px);
+  mix-blend-mode: multiply;
+  opacity:.35;
+  pointer-events:none;
+  border-radius: 2px;
+  z-index:0;
+}
+
+/* top & bottom rollers */
+
+.scroll-skin > .scroll-bottom,
+.scroll-skin > .scroll-top{ display:none; } /* placeholders if you had elements */
+
+/* bottom roller (separate pseudo so it can sit behind) */
+.scroll-skin::marker{ display:none; } /* silence markers in some browsers */
+.scroll-skin { --roller-h: 24px; }
+.scroll-skin .sample-body{ padding-bottom: calc(24px + 16px); } /* avoid overlap */
+
+/* create the bottom roller using a separate pseudo via wrapper trick */
+.scroll-skin { overflow: visible; }
+.scroll-skin:focus { outline: none; }
+.scroll-skin + .scroll-shadow{ display:none; } /* if you had extra divs */
+
+/* consistent dimensions for rollers */
+.scroll-skin{ 
+  --roller-h: 26px;
+  overflow: visible;
+  padding-top: calc(var(--roller-h) + 8px);    /* space for top roller */
+  padding-bottom: calc(var(--roller-h) + 8px); /* space for bottom roller */
+}
+
+/* TOP roller */
+.scroll-skin::before{
+  content:"";
+  position:absolute; left: 0; right: 0; top: calc(-1 * var(--roller-h));
+  height: var(--roller-h);
+  background:
+    radial-gradient( at 50% 120%, rgba(0,0,0,.25), transparent 70%) top/100% 100% no-repeat,
+    linear-gradient(90deg, #a08a5c, #c8b27e 35%, #a08a5c 70%);
+  border-top-left-radius: 12px; border-top-right-radius: 12px;
+  box-shadow: 0 6px 10px rgba(0,0,0,.25);
+  pointer-events:none;
+  z-index: 1;
+}
+
+/* BOTTOM roller */
+.scroll-skin::after{
+  content:"";
+  position:absolute; left: 0; right: 0; bottom: calc(-1 * var(--roller-h));
+  height: var(--roller-h);
+  background:
+    radial-gradient( at 50% -20%, rgba(0,0,0,.25), transparent 70%) bottom/100% 100% no-repeat,
+    linear-gradient(90deg, #a08a5c, #c8b27e 35%, #a08a5c 70%);
+  border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;
+  box-shadow: 0 -6px 10px rgba(0,0,0,.25);
+  pointer-events:none;
+  z-index: 1;
+}
+
+/* keep content above rollers */
+.sample-paper > *{ position: relative; z-index: 2; }
+.sample-header{ z-index: 3; } /* title & × above everything */
+
+
+/* soft tapered sides without hiding the center */
+.scroll-skin{
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0, black 14px, black calc(100% - 14px), transparent 100%);
+}
+
+/* header blends into parchment */
+.scroll-skin .sample-header{
+  background: linear-gradient(#efe3c0, #e9d8ac);
+  border-bottom: 1px solid rgba(130,102,42,.35);
+}
+
+/* body spacing feels more scroll-like (looser) */
+.scroll-skin .sample-body{
+  height: calc(100% - 72px);
+  padding: 12px 24px 24px;
+  max-width: 62ch;
+}
+
+/* mobile sizing */
+@media (max-width:520px){
+  .scroll-skin{
+    width: 92vw;
+  }
+  .scroll-skin .sample-body{
+    max-width: 58ch;
+    padding: 8px 16px 18px;
   }
 }
 
