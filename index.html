@@ -37,6 +37,7 @@
   <a href="#home" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Home</a>
   <a href="#about" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">About</a>
   <a href="#characters" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Characters</a>
+  <a href="#novella" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Novella</a>
   <a href="#lore" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Lore</a>
   <a href="#contact" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Contact</a>
 </div>
@@ -45,39 +46,60 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-background"></div>
-        <div class="container">
-  <div class="hero-content">
-    <h1 class="hero-title">The Jade Pandora</h1>
-    <h2 class="hero-subtitle">Two Kings, One Throne</h2>
-    <p class="hero-author">by A.D. Stevens</p>
+ <!-- Hero Section -->
+   <section id="home" class="hero">
+  <div class="hero-background"></div>
 
-    <div class="hero-description">
-      <p class="hero-tagline">
-        A humble farm boy. A weapon of the gods. A destiny that could save—or shatter—the world.
-      </p>
-    </div>
+  <div class="container">
+    <div class="hero-content">
+      <!-- Accessible text for SEO/screen readers -->
+      <h1 class="sr-only">The Jade Pandora</h1>
 
-    <!-- 🔻 Moved INSIDE hero-content and placed above buttons -->
-    <div class="hero-book">
-      <div class="book-cover">
-        <div class="book-spine"></div>
-        <img src="assets/cover.webp" class="book-front" alt="The Jade Pandora book cover">
+      <!-- Visual logo in place of text heading -->
+      <div class="hero-title hero-title-logo">
+        <img src="assets/logo2.webp" alt="The Jade Pandora">
+      </div>
+
+      <h2 class="hero-subtitle">Two Kings, One Throne</h2>
+
+      <p class="hero-author">by A.D. Stevens</p>
+
+      <div class="hero-description">
+        <p class="hero-tagline">
+          A humble farm boy. A weapon of the gods. A destiny that could save—or shatter—the world.
+        </p>
+      </div>
+
+      <!-- Buttons stay in the text column -->
+      <div class="hero-buttons">
+        <button class="btn btn-primary"
+          onclick="window.open('https://www.amazon.co.uk/Jade-Pandora-Two-Kings-Throne-ebook/dp/B0FP478D8H/ref=sr_1_1?crid=114WHCDMZVSPF&dib=eyJ2IjoiMSJ9.lraec5dy2kT0Tsy8ZpOGGY9YphNWvf5xqYP3TVBB281wRTCOjnMFyxImDnQiXxrDXVzP86CZPNE0gGhjQZnfFI9-R5orCXqxNPZVfKMS0hG8-ZWUEMxtfbvMKpp9Y56cr2bcQBw2hbc2mk4K8-g1oiOu6ajhCZ9Ou1uDxD-r1hEXNbBsklXodE-iN6yQVXUHEzY_Qe4D7z_gCkaXmJXbH2WaCYUajXgTW9G9saYnfWI.Y4I5HZ9SaqyOKYn1Au7SVzYXM_y2NGmXuB_4J5bCXEE&dib_tag=se&keywords=the+jade+pandora&qid=1757341664&sprefix=%2Caps%2C193&sr=8-1', '_blank')">
+          Get Your Copy
+        </button>
+        <button id="readSampleBtn" class="btn btn-secondary">Read Sample</button>
+        <button class="btn btn-primary"
+          onclick="window.open('https://preview.mailerlite.io/forms/1803906/165871066667812767/share', '_blank')">
+          Join The Newsletter
+        </button>
+        <button class="btn btn-secondary"
+          onclick="window.open('https://www.goodreads.com/book/show/240815946-the-jade-pandora-two-kings-one-throne', '_blank')">
+          Leave a Review
+        </button>
+      </div>
+
+      <!-- Book goes in column 2 via CSS grid -->
+      <div class="hero-book">
+        <div class="book-cover">
+          <div class="book-spine"></div>
+          <img src="assets/cover.webp" class="book-front" alt="The Jade Pandora book cover">
+        </div>
       </div>
     </div>
-
-    <div class="hero-buttons">
-      <button class="btn btn-primary" onclick="window.open('https://www.amazon.co.uk/Jade-Pandora-Two-Kings-Throne-ebook/dp/B0FP478D8H/ref=sr_1_1?crid=114WHCDMZVSPF&dib=eyJ2IjoiMSJ9.lraec5dy2kT0Tsy8ZpOGGY9YphNWvf5xqYP3TVBB281wRTCOjnMFyxImDnQiXxrDXVzP86CZPNE0gGhjQZnfFI9-R5orCXqxNPZVfKMS0hG8-ZWUEMxtfbvMKpp9Y56cr2bcQBw2hbc2mk4K8-g1oiOu6ajhCZ9Ou1uDxD-r1hEXNbBsklXodE-iN6yQVXUHEzY_Qe4D7z_gCkaXmJXbH2WaCYUajXgTW9G9saYnfWI.Y4I5HZ9SaqyOKYn1Au7SVzYXM_y2NGmXuB_4J5bCXEE&dib_tag=se&keywords=the+jade+pandora&qid=1757341664&sprefix=%2Caps%2C193&sr=8-1', '_blank')">Get Your Copy</button>
-      <button id="readSampleBtn" class="btn btn-secondary">Read Sample</button>
-      <button class="btn btn-primary" onclick="window.open('https://preview.mailerlite.io/forms/1803906/165871066667812767/share', '_blank')">Join The Newsletter</button>
-    </div>
   </div>
-</div>
-        
-        <div class="sword-divider"></div>
-    </section>
+
+  <div class="sword-divider"></div>
+</section>
+
 
     <!-- About The Book Section -->
     <section id="about" class="aboutB">
@@ -129,6 +151,112 @@
             </div>
         </div>
     </section>
+
+<!-- Novella Showcase Section -->
+<section id="novella" class="novella-showcase">
+    <div class="novella-background"></div>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="novella-header">
+            <div class="novella-badge">
+                <span class="badge-line"></span>
+                <span class="badge-text">Novella</span>
+                <span class="badge-line"></span>
+            </div>
+
+            <h2 class="section-title">Lemma: The Star At The Beginning</h2>
+            <p class="novella-tagline">
+                Discover the origin story of the warrior princess who defied destiny
+            </p>
+        </div>
+
+        <!-- NEW CONTENT STRUCTURE -->
+        <div class="novella-content">
+
+            <!-- 1) DESCRIPTION TEXT -->
+            <div class="novella-description">
+
+                <div class="novella-series-tag">
+                    <span class="tag-line"></span>
+                    <span>The Jade Pandora Series</span>
+                </div>
+
+                <h3 class="novella-subtitle">
+                    A Divine Weapon. <br>
+                    <span class="highlight-jade">A Destiny Rejected.</span>
+                </h3>
+
+                <div class="novella-text">
+                    <p>
+                        A divine weapon linked to the gods themselves,
+                        <span class="text-jade">the Star of Sciran</span> decides who will be the next Queen.
+                    </p>
+
+                    <p>
+                        Lemma, the next heir, rejects the decorum and the forced nature of being royal.
+                        She may have been born a princess, but she chooses the life of a warrior.
+                    </p>
+
+                    <p>
+                        Naturally empathetic and granted the ability to see inside the souls of those
+                        who have become tainted, she trains daily to ready herself for the day she may
+                        need to fight a god and his creations.
+                    </p>
+
+                    <p class="novella-quote">
+                        When her people call, she will always answer—no matter the distance she travels.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2) BOOK COVER -->
+            <div class="novella-book-wrapper">
+                <div class="novella-book" id="novellaBook">
+                    <div class="novella-cover-front">
+                        <img src="assets/NovellaFrontCover.webp"
+                             alt="Lemma: The Star At The Beginning - Front Cover">
+                        <div class="cover-overlay"></div>
+                    </div>
+
+                    <div class="novella-cover-back">
+                        <img src="assets/NovellaBackCover.webp"
+                             alt="Lemma: The Star At The Beginning - Back Cover">
+                    </div>
+                </div>
+
+                <p class="flip-hint">Click to flip cover</p>
+                <div class="novella-decoration decoration-tl"></div>
+                <div class="novella-decoration decoration-br"></div>
+            </div>
+
+            <!-- 3) GET NOVELLA BUTTON -->
+            <div class="novella-buttons">
+                <button class="btn btn-primary"
+                    onclick="window.open('https://www.amazon.co.uk/gp/product/B0FXHL38JH/ref=x_gr_bb_amazon?ie=UTF8&tag=x_gr_bb_amazon-21&linkCode=as2&camp=1634&creative=6738', '_blank')">
+                    Get the Novella
+                    <button class="btn btn-secondary" onclick="window.open('https://www.goodreads.com/book/show/243119659-the-jade-pandora-lemma', '_blank')">Leave a Review</button>
+                </button>
+            </div>
+
+            <!-- 4) CTA BOX -->
+            <div class="novella-cta-box">
+                <p class="cta-main">
+                    If you enjoyed this novella from the world of
+                    <span class="text-ember">The Jade Pandora</span>,<br>
+                    then please consider picking up a copy of<br>
+                    <strong>The Jade Pandora: Two Kings, One Throne</strong><br>
+                    <span class="cta-sub">The first book of the main series</span>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sword-divider"></div>
+</section>
+
 
     <!-- Lore Section -->
     <section id="lore" class="lore">
@@ -245,18 +373,19 @@ If you have read this far I thankyou for taking the time to get to know me and m
       </div>
 
       <div class="footer-column">
-        <h4>Quick Links</h4>
+        <h3 class="footer-title">Quick Links</h3>
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#characters">Characters</a></li>
+          <li><a href="#novella">Novella</a></li>
           <li><a href="#lore">Lore</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
-        <h4>Connect With Us</h4>
+        <h3 class="footer-title">Connect With Us</h3>
 <div class="social-links">
   <a class="btn-tiktok" href="https://www.tiktok.com/@ad_stevens_author?lang=en">Follow me on TikTok</a>
   <a class="btn-goodreads" href="https://www.goodreads.com/author/show/59017555.A_D_Stevens">Review My Goodreads</a>
@@ -386,6 +515,28 @@ document.getElementById("contactForm").addEventListener("submit", function(e) {
   openBtn.addEventListener('click', (e) => { e.preventDefault(); openSample(); });
   closeEls().forEach(el => el.addEventListener('click', closeSample));
 })();
+
+// Flip novella cover front/back
+  const novellaBook = document.getElementById('novellaBook');
+
+  if (novellaBook) {
+    // make it clickable
+    novellaBook.addEventListener('click', () => {
+      novellaBook.classList.toggle('flipped');
+    });
+
+    // a11y: keyboard + focus
+    novellaBook.setAttribute('tabindex', '0');
+    novellaBook.setAttribute('role', 'button');
+    novellaBook.setAttribute('aria-label', 'Flip novella cover');
+
+    novellaBook.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        novellaBook.classList.toggle('flipped');
+      }
+    });
+  }
 </script>
 
 </html>

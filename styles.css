@@ -10,6 +10,10 @@
   --jade-glow: #3AA78F;
   --parchment-gold: #D6C69F;
   --white-mist: #F5F5F5;
+  --gradient-dark: radial-gradient(circle at 0% 0%, #141414 0, #0d0d0d 35%, #181818 70%, #050505 100%);
+  --shadow-card: 0 18px 45px rgba(0, 0, 0, 0.55);
+  --shadow-jade: 0 0 35px rgba(58, 167, 143, 0.6);
+  --transition-smooth: 260ms ease;
 
   /* Spacing Scale */
   --space-xs: 4px;
@@ -206,220 +210,247 @@ body{ padding-top: var(--nav-h); }
 
 /* Hero Section */
 .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: var(--space-xxl) 0;
-    background: linear-gradient(135deg, var(--obsidian-black) 0%, var(--ash-gray) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: var(--space-xxl) 0;
+  background: linear-gradient(
+    135deg,
+    var(--obsidian-black) 0%,
+    var(--ash-gray) 100%
+  );
 }
 
 .hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(226, 88, 34, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(58, 167, 143, 0.1) 0%, transparent 50%);
-    z-index: -1;
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 80%, rgba(226, 88, 34, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(58, 167, 143, 0.1) 0%, transparent 50%);
+  z-index: -1;
 }
 
-.hero .container{
+/* Container is just a normal block – grid lives on hero-content */
+.hero .container {
+  display: block;
+}
+
+/* Two-column layout: text | book */
+.hero-content {
   display: grid;
-  grid-template-columns: 1.25fr 0.75fr; /* text | book */
-  gap: var(--space-xl);
+  grid-template-columns: 1.25fr 0.75fr;
+  column-gap: var(--space-xl);
   align-items: center;
 }
-/* Keep the book on the right */
-.hero-book{
+
+/* By default, everything in hero-content goes in column 1 (text side) */
+.hero-content > * {
+  grid-column: 1;
+}
+
+/* Book lives in column 2 */
+.hero-book {
   grid-column: 2;
-  grid-row: 1 / span 5;  /* span title → buttons */
+  grid-row: 1 / span 6;           /* roughly title → buttons */
   justify-self: end;
-  align-self: start;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
 }
 
-.hero-content {
-  display: grid;
-  grid-template-columns: 1fr 420px;   /* text | book */
-  column-gap: var(--space-xl);
-  align-items: start;
+/* Logo-as-title */
+.hero-title {
+  font-size: clamp(48px, 8vw, 80px);
+  margin-bottom: var(--space-m);
+  background: linear-gradient(135deg, var(--parchment-gold) 0%, var(--jade-glow) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.hero-title {
-    font-size: clamp(48px, 8vw, 80px);
-    margin-bottom: var(--space-m);
-    background: linear-gradient(135deg, var(--parchment-gold) 0%, var(--jade-glow) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+/* When we’re using the logo image instead of text */
+.hero-title.hero-title-logo {
+  font-size: 0;                    /* remove stray text spacing */
+  margin-bottom: var(--space-m);
+}
+
+.hero-title-logo img {
+  display: block;
+  max-width: 400px;
+  width: 100%;
+  height: auto;
 }
 
 .hero-subtitle {
-    font-size: clamp(24px, 4vw, 36px);
-    margin-bottom: var(--space-s);
-    color: var(--jade-glow);
+  font-size: clamp(24px, 4vw, 36px);
+  margin-bottom: var(--space-s);
+  color: var(--jade-glow);
 }
 
 .hero-author {
-    font-size: 20px;
-    color: var(--parchment-gold);
-    margin-bottom: var(--space-l);
-    font-weight: 600;
+  font-size: 20px;
+  color: var(--parchment-gold);
+  margin-bottom: var(--space-l);
+  font-weight: 600;
 }
 
 .hero-tagline {
-    font-size: 22px;
-    color: var(--white-mist);
-    font-style: italic;
-    margin-bottom: var(--space-xl);
-    max-width: 500px;
+  font-size: 22px;
+  color: var(--white-mist);
+  font-style: italic;
+  margin-bottom: var(--space-xl);
+  max-width: 500px;
 }
 
+/* Buttons – same layout as before */
 .hero-buttons {
-    display: flex;
-    gap: var(--space-m);
-    flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-m);
+  max-width: 500px;
 }
 
 /* Book Cover */
-.hero-book {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .book-cover {
-    width: 300px;
-    height: 450px;
-    position: relative;
-    transform: perspective(1000px) rotateY(-15deg);
-    transition: all 0.5s ease;
-    cursor: pointer;
+  width: 300px;
+  height: 450px;
+  position: relative;
+  transform: perspective(1000px) rotateY(-15deg);
+  transition: all 0.5s ease;
+  cursor: pointer;
 }
 
 .book-cover:hover {
-    transform: perspective(1000px) rotateY(-5deg) scale(1.05);
+  transform: perspective(1000px) rotateY(-5deg) scale(1.05);
 }
 
 .book-spine {
-    position: absolute;
-    left: -20px;
-    top: 0;
-    width: 20px;
-    height: 100%;
-    background: linear-gradient(180deg, var(--ash-gray) 0%, var(--obsidian-black) 100%);
-    border-radius: 0 0 0 8px;
+  position: absolute;
+  left: -20px;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--ash-gray) 0%, var(--obsidian-black) 100%);
+  border-radius: 0 0 0 8px;
 }
 
 .book-front {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;   /* makes it fill while keeping aspect ratio */
-    border: 1px solid var(--parchment-gold);
-    border-radius: 8px;
-    box-shadow: 
-        0 0 20px rgba(226, 88, 34, 0.3),
-        inset 0 0 50px rgba(58, 167, 143, 0.1);
-    display: block;      /* prevents flex weirdness */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid var(--parchment-gold);
+  border-radius: 8px;
+  box-shadow:
+    0 0 20px rgba(226, 88, 34, 0.3),
+    inset 0 0 50px rgba(58, 167, 143, 0.1);
+  display: block;
 }
 
 .book-title {
-    font-family: 'Cinzel Decorative', serif;
-    font-size: 28px;
-    color: var(--parchment-gold);
-    margin-bottom: var(--space-m);
-    text-shadow: 0 0 10px var(--jade-glow);
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 28px;
+  color: var(--parchment-gold);
+  margin-bottom: var(--space-m);
+  text-shadow: 0 0 10px var(--jade-glow);
 }
 
 .book-author {
-    font-size: 16px;
-    color: var(--white-mist);
-    margin-bottom: var(--space-l);
+  font-size: 16px;
+  color: var(--white-mist);
+  margin-bottom: var(--space-l);
 }
 
 .rune-pattern {
-    position: absolute;
-    bottom: var(--space-l);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 60px;
-    border: 2px solid var(--jade-glow);
-    border-radius: 50%;
-    background: radial-gradient(circle, transparent 30%, var(--jade-glow) 31%, var(--jade-glow) 33%, transparent 34%);
-    opacity: 0.7;
-    animation: runeGlow 3s ease-in-out infinite alternate;
+  position: absolute;
+  bottom: var(--space-l);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--jade-glow);
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 30%, var(--jade-glow) 31%, var(--jade-glow) 33%, transparent 34%);
+  opacity: 0.7;
+  animation: runeGlow 3s ease-in-out infinite alternate;
 }
 
 @keyframes runeGlow {
-    from { opacity: 0.7; box-shadow: 0 0 10px var(--jade-glow); }
-    to { opacity: 1; box-shadow: 0 0 20px var(--jade-glow), 0 0 30px var(--jade-glow); }
+  from { opacity: 0.7; box-shadow: 0 0 10px var(--jade-glow); }
+  to   { opacity: 1;   box-shadow: 0 0 20px var(--jade-glow), 0 0 30px var(--jade-glow); }
 }
 
-/* Buttons */
+/* Buttons – shared styles (unchanged) */
 .btn {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    padding: 14px 28px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary {
-    background: var(--molten-ember);
-    color: var(--white-mist);
-    box-shadow: 0 4px 15px rgba(226, 88, 34, 0.3);
+  background: var(--molten-ember);
+  color: var(--white-mist);
+  box-shadow: 0 4px 15px rgba(226, 88, 34, 0.3);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--molten-ember) 0%, var(--jade-glow) 100%);
-    box-shadow: 0 6px 20px rgba(226, 88, 34, 0.4), 0 0 30px var(--jade-glow);
-    transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--molten-ember) 0%, var(--jade-glow) 100%);
+  box-shadow:
+    0 6px 20px rgba(226, 88, 34, 0.4),
+    0 0 30px var(--jade-glow);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background: transparent;
-    color: var(--jade-glow);
-    border: 2px solid var(--jade-glow);
+  background: transparent;
+  color: var(--jade-glow);
+  border: 2px solid var(--jade-glow);
 }
 
 .btn-secondary:hover {
-    background: rgba(58, 167, 143, 0.2);
-    box-shadow: 0 0 20px var(--jade-glow);
-    transform: translateY(-2px);
+  background: rgba(58, 167, 143, 0.2);
+  box-shadow: 0 0 20px var(--jade-glow);
+  transform: translateY(-2px);
 }
 
 /* Sword Divider */
 .sword-divider {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 4px;
-    background: linear-gradient(90deg, transparent 0%, var(--parchment-gold) 50%, transparent 100%);
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--parchment-gold) 50%,
+    transparent 100%
+  );
 }
 
 .sword-divider::before {
-    content: '⚔';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--parchment-gold);
-    font-size: 20px;
+  content: '⚔';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--parchment-gold);
+  font-size: 20px;
 }
+
 
 /* Section Styles */
 section {
@@ -574,9 +605,298 @@ section {
     z-index: 2;
 }
 
+/* === Novella Showcase Section === */
+.novella-showcase {
+    padding: 8rem 0;
+    position: relative;
+    overflow: hidden;
+    background: var(--ash-gray);
+}
+
+.novella-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.novella-background::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(58, 167, 143, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glowPulse 5s ease-in-out infinite;
+}
+
+.novella-background::after {
+    content: '';
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(226, 88, 34, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glowPulse 5s ease-in-out infinite 2.5s;
+}
+
+.novella-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 1s ease-out;
+}
+
+.novella-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.badge-line {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--jade-glow));
+}
+
+.badge-text {
+    color: var(--jade-glow);
+    font-family: 'Cinzel', serif;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.novella-tagline {
+    font-size: 1.25rem;
+    color: var(--parchment-gold);
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.novella-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-areas:
+    "book desc"
+    "book btn"
+    "book cta";
+  column-gap: 3rem;
+  row-gap: 1.5rem;
+  align-items: start;
+}
+
+.novella-book-wrapper { grid-area: book; }
+.novella-description  { grid-area: desc; }
+.novella-buttons      { grid-area: btn; }
+.novella-cta-box      { grid-area: cta; }
+
+/* Novella Book Interactive */
+.novella-book-wrapper {
+    position: relative;
+    perspective: 1500px;
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.novella-book {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 2/3;
+    margin: 0 auto;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    animation: float 8s ease-in-out infinite;
+}
+
+.novella-book.flipped {
+    transform: rotateY(180deg);
+}
+
+.novella-cover-front,
+.novella-cover-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    border: 2px solid rgba(58, 167, 143, 0.2);
+    transition: var(--transition-smooth);
+}
+
+.novella-book:hover .novella-cover-front,
+.novella-book:hover .novella-cover-back {
+    box-shadow: var(--shadow-jade);
+    border-color: var(--jade-glow);
+}
+
+.novella-cover-front img,
+.novella-cover-back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.novella-cover-back {
+    transform: rotateY(180deg);
+    border-color: rgba(226, 88, 34, 0.2);
+}
+
+.cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13, 13, 13, 0.6) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.novella-book:hover .cover-overlay {
+    opacity: 1;
+}
+
+.flip-hint {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: rgba(58, 167, 143, 0.8);
+    font-family: 'Cinzel', serif;
+    font-size: 0.875rem;
+    animation: glowPulse 2s ease-in-out infinite;
+}
+
+.novella-decoration {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 2px solid;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.decoration-tl {
+    top: -20px;
+    left: -20px;
+    border-color: var(--jade-glow);
+    border-right: none;
+    border-bottom: none;
+    border-top-left-radius: 30px;
+}
+
+.decoration-br {
+    bottom: -20px;
+    right: -20px;
+    border-color: var(--molten-ember);
+    border-left: none;
+    border-top: none;
+    border-bottom-right-radius: 30px;
+}
+
+/* Novella Description */
+.novella-description {
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.novella-series-tag {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--jade-glow);
+    font-size: 0.875rem;
+}
+
+.tag-line {
+    width: 40px;
+    height: 1px;
+    background: var(--jade-glow);
+}
+
+.novella-subtitle {
+    font-size: 2rem;
+    line-height: 1.3;
+    margin-bottom: 2rem;
+    color: var(--parchment-gold);
+}
+
+.highlight-jade {
+    color: var(--jade-glow);
+    display: block;
+}
+
+.novella-text {
+    margin-bottom: 2rem;
+}
+
+.novella-text p {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    color: rgba(245, 245, 245, 0.95);
+}
+
+.text-jade {
+    color: var(--jade-glow);
+    font-weight: 600;
+}
+
+.text-ember {
+    color: var(--molten-ember);
+    font-weight: 600;
+}
+
+.novella-quote {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--molten-ember);
+    margin: 1.5rem 0;
+}
+
+.novella-cta-box {
+    background: rgba(58, 167, 143, 0.05);
+    border: 1px solid rgba(58, 167, 143, 0.2);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cta-text {
+    color: rgba(245, 245, 245, 0.8);
+    margin-bottom: 0.75rem;
+}
+
+.cta-main {
+    color: var(--white-mist);
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+.cta-main strong {
+    color: var(--jade-glow);
+}
+
+.cta-sub {
+    font-size: 0.875rem;
+    color: var(--parchment-gold);
+}
+
+.novella-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 /* Lore Section */
 .lore {
-    background: var(--ash-gray);
+    background: var(--obsidian-black);
     position: relative;
 }
 
@@ -693,7 +1013,7 @@ section {
 /* About Section */
 .about-section {
     padding: 80px 0;
-    background-color: var(--obsidian-black)
+    background-color: var(--ash-gray)
 }
 
 .about-content {
@@ -702,7 +1022,7 @@ section {
 }
 
 .author-card {
-    background-color: var(--ash-gray);
+    background-color: var(--obsidian-black);
     border: 2px solid var(--parchment-gold);
 box-shadow: 0 0 10px rgba(226, 88, 34, 0.3);
     border-radius: 12px;
@@ -862,12 +1182,51 @@ box-shadow: 0 0 10px rgba(226, 88, 34, 0.3);
   }
 }
 
+/* === Novella layout – mobile (order + centering + size) === */
+@media (max-width: 768px) {
+  .novella-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* centres the book wrapper */
+    gap: 2rem;
+  }
+
+  /* Order: text → book → button → CTA */
+  .novella-description  { order: 1; width: 100%; }
+  .novella-book-wrapper { order: 2; width: 100%; display: flex; justify-content: center; }
+  .novella-buttons      { order: 3; width: 100%; justify-content: center; }
+  .novella-cta-box      { order: 4; width: 100%; }
+
+  /* Center the whole wrapper */
+  .novella-book-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  /* keep the cover big & centred on phones */
+  .novella-book {
+    width: 100%;
+    max-width: clamp(220px, 70vw, 320px);
+    margin: 0 auto;
+  }
+    /* Move "Click to flip" under the book */
+  .flip-hint {
+    order: 2;
+    margin-top: 12px;
+    text-align: center;
+    width: 100%;
+}
+}
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-
     .hero .container {
         display: block;
         text-align: center;
+        padding: 0 var(--container-padding);
     }
     
     .hero-book {
@@ -886,10 +1245,15 @@ box-shadow: 0 0 10px rgba(226, 88, 34, 0.3);
     height: auto;
   }
     
-    .hero-buttons {
-        margin-top: var(--space-l); 
-        justify-content: center;
-    }
+  .hero-buttons {
+    grid-template-columns: 1fr;          /* 1 per row */
+    max-width: 320px;                    /* roughly book width */
+    margin: var(--space-m) auto 0;       /* center the whole group */
+  }
+
+  .hero-buttons .btn {
+    width: 100%;                         /* fill that 320px nicely */
+  }
     
     .character-grid {
         grid-template-columns: 1fr;
@@ -1344,6 +1708,37 @@ body.no-scroll { overflow: hidden; }
 .social-links .btn-goodreads:hover {
   opacity: 0.9;
   transform: translateY(-2px);
+}
+
+/* === Global mobile spacing tweaks === */
+@media (max-width: 768px) {
+  /* All sections – less top/bottom padding */
+  section {
+    padding: var(--space-xl) 0;      /* 32px instead of 128px */
+  }
+
+  /* Hero – stop it being so tall on phones */
+  .hero {
+    padding: var(--space-xl) 0;     /* was var(--space-xxl) */
+    min-height: auto;               /* don't force full viewport height */
+  }
+
+  /* Novella section – tighten up */
+  .novella-showcase {
+    padding: var(--space-xl) 0;
+  }
+
+  /* About section – slightly smaller too */
+  .about-section {
+    padding: var(--space-xl) 0;
+  }
+
+  /* Characters / Lore / Contact if you want them tighter as well */
+  .characters,
+  .lore,
+  .contact {
+    padding: var(--space-xl) 0;
+  }
 }
 
 
