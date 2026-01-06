@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appritian Name Generator - The Jade Pandora</title>
+    <meta name="description" content="Generate your own Appritian name and origin from the world of The Jade Pandora.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Inter:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Generator-specific styles */
+        .generator-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 24px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .generator-background {
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-dark);
+            z-index: 0;
+        }
+
+        /* =================================================
+           BACKGROUND BLOBS - Adjust width/height to resize
+           Move by changing top/left/bottom/right percentages
+           ================================================= */
+        .generator-background::before {
+            content: '';
+            position: absolute;
+            top: 15%;          /* Move up/down: lower % = higher position */
+            left: 5%;          /* Move left/right: lower % = more left */
+            width: 800px;      /* BLOB SIZE: Increase for bigger blob */
+            height: 800px;     /* BLOB SIZE: Increase for bigger blob */
+            background: radial-gradient(circle, rgba(58, 167, 143, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        .generator-background::after {
+            content: '';
+            position: absolute;
+            bottom: 5%;        /* Move up/down: lower % = lower position */
+            right: 5%;         /* Move left/right: lower % = more right */
+            width: 700px;      /* BLOB SIZE: Increase for bigger blob */
+            height: 700px;     /* BLOB SIZE: Increase for bigger blob */
+            background: radial-gradient(circle, rgba(226, 88, 34, 0.18) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: glowPulse 4s ease-in-out infinite 2s;
+        }
+
+        .generator-content {
+            position: relative;
+            z-index: 10;
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .generator-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .generator-subtitle {
+            color: var(--jade-glow);
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .generator-intro {
+            font-family: 'Crimson Pro', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: rgba(245, 245, 245, 0.8);
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        /* Spinner Container */
+        .spinners-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .spinner-group {
+            background: var(--ash-gray);
+            border: 1px solid rgba(214, 198, 159, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .spinner-group:hover {
+            border-color: var(--jade-glow);
+        }
+
+        .spinner-label {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--parchment-gold);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .spinner-window {
+            position: relative;
+            height: 60px;
+            overflow: hidden;
+            background: var(--obsidian-black);
+            border-radius: 8px;
+            border: 2px solid rgba(214, 198, 159, 0.3);
+        }
+
+        .spinner-reel {
+            position: absolute;
+            width: 100%;
+            transition: transform 0.1s ease-out;
+        }
+
+        .spinner-item {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.5rem;
+            color: var(--white-mist);
+        }
+
+        .spinner-window::before,
+        .spinner-window::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 20px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .spinner-window::before {
+            top: 0;
+            background: linear-gradient(to bottom, var(--obsidian-black), transparent);
+        }
+
+        .spinner-window::after {
+            bottom: 0;
+            background: linear-gradient(to top, var(--obsidian-black), transparent);
+        }
+
+        /* Spinning animation state */
+        .spinner-reel.spinning {
+            animation: spinReel 0.15s linear infinite;
+        }
+
+        @keyframes spinReel {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-60px); }
+        }
+
+        /* Result Display */
+        .result-container {
+            background: linear-gradient(135deg, rgba(58, 167, 143, 0.1), rgba(226, 88, 34, 0.1));
+            border: 2px solid var(--jade-glow);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .result-container.revealed {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .result-container.revealed .result-name {
+            animation: revealName 0.8s ease-out forwards;
+        }
+
+        @keyframes revealName {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+                text-shadow: none;
+            }
+            50% {
+                text-shadow: 0 0 40px var(--molten-ember);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                text-shadow: 0 0 20px rgba(226, 88, 34, 0.5);
+            }
+        }
+
+        .result-label {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--jade-glow);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            color: var(--parchment-gold);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(226, 88, 34, 0.5);
+        }
+
+        .result-origin {
+            font-family: 'Crimson Pro', serif;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: var(--white-mist);
+        }
+
+        /* Buttons */
+        .generator-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        /* PRIMARY BUTTON - Orange ember style (matches main site) */
+        .btn-spin {
+  background: var(--molten-ember);
+  color: var(--white-mist);
+  box-shadow: 0 4px 15px rgba(226, 88, 34, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-spin::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-spin:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-spin:hover {
+  background: linear-gradient(135deg, var(--molten-ember) 0%, var(--jade-glow) 100%);
+  box-shadow:
+    0 6px 20px rgba(226, 88, 34, 0.4),
+    0 0 30px var(--jade-glow);
+  transform: translateY(-2px);
+        }
+
+        .btn-spin:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-spin:disabled:hover::before {
+            width: 0;
+            height: 0;
+        }
+
+        /* SECONDARY BUTTON - Jade outline style */
+        .btn-secondary-gen {
+            background: transparent;
+            color: var(--jade-glow);
+            border: 2px solid var(--jade-glow);
+            box-shadow: none;
+        }
+
+        .btn-secondary-gen:hover {
+            background: rgba(58, 167, 143, 0.2);
+            box-shadow: var(--shadow-jade);
+        }
+
+        /* Particle effects */
+        .particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--parchment-gold);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .particle.burst {
+            animation: particleBurst 1s ease-out forwards;
+        }
+
+        @keyframes particleBurst {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+
+        /* ===== EMBER FIRE ANIMATION ===== */
+        .ember-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;  /* Visible above background, but behind content */
+            overflow: hidden;
+        }
+
+        .ember {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--molten-ember);
+            border-radius: 50%;
+            box-shadow: 0 0 6px 2px rgba(226, 88, 34, 0.8);
+            animation: emberFloat linear infinite;
+        }
+
+        @keyframes emberFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* ===== DECORATIVE LOGO ===== */
+        .decorative-logo {
+            position: absolute;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .decorative-logo.left {
+            left: -5%;
+            top: 20%;
+            width: 300px;
+            transform: rotate(-10deg);
+        }
+
+        .decorative-logo.right {
+            right: -5%;
+            bottom: 15%;
+            width: 280px;
+            transform: rotate(10deg);
+        }
+
+        @media (max-width: 1024px) {
+            .decorative-logo {
+                display: none;
+            }
+        }
+
+        /* Back link */
+        .back-link {
+            position: fixed;
+            top: 90px;
+            left: 24px;
+            color: var(--parchment-gold);
+            text-decoration: none;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition-smooth);
+            z-index: 100;
+        }
+
+        .back-link:hover {
+            color: var(--molten-ember);
+            transform: translateX(-5px);
+        }
+
+        .back-link::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .generator-page {
+                padding: 100px 16px 40px;
+            }
+
+            .generator-title {
+                font-size: 1.75rem;
+            }
+
+            .generator-subtitle {
+                font-size: 1rem;
+            }
+
+            .generator-intro {
+                font-size: 1rem;
+            }
+
+            .spinner-item {
+                font-size: 1.25rem;
+            }
+
+            .result-name {
+                font-size: 1.75rem;
+            }
+
+            .result-origin {
+                font-size: 1.1rem;
+            }
+
+            .back-link {
+                top: 75px;
+                left: 16px;
+                font-size: 0.8rem;
+            }
+
+            .generator-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .generator-buttons .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .generator-title {
+                font-size: 1.5rem;
+            }
+
+            .spinner-group {
+                padding: 1rem;
+            }
+
+            .result-container {
+                padding: 1.5rem;
+            }
+
+            .result-name {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="index.html" class="logo">
+                    <img src="assets/LogoT.webp" alt="A D Stephens">
+                </a>
+
+                <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Open menu">
+
+                <label for="nav-toggle" class="mobile-menu-btn" aria-controls="navLinks">
+                    <span></span><span></span><span></span>
+                </label>
+                        
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html#home" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Home</a>
+                    <a href="index.html#about" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">About</a>
+                    <a href="index.html#characters" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Characters</a>
+                    <a href="index.html#novella" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Novella</a>
+                    <a href="index.html#lore" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Lore</a>
+                    <a href="index.html#contact" class="nav-link" onclick="document.getElementById('nav-toggle').checked = false">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <a href="index.html" class="back-link">Return to Main</a>
+
+    <!-- Ember Container - Fire particles -->
+    <div class="ember-container" id="emberContainer"></div>
+
+    <main class="generator-page">
+        <div class="generator-background"></div>
+        <div class="particles" id="particles"></div>
+        
+        <!-- Decorative Logos (visible on desktop only) -->
+        <img src="assets/ltsatb_logo.png" alt="" class="decorative-logo left" aria-hidden="true">
+        <img src="assets/2k1t_logo.png" alt="" class="decorative-logo right" aria-hidden="true">
+
+        <div class="generator-content">
+            <h1 class="generator-title">Appritian Identity</h1>
+            <p class="generator-subtitle">Discover Your True Name</p>
+            <p class="generator-intro">
+                The ancient scrolls speak of many souls across the lands. 
+                Spin the wheel of fate and discover your Appritian identity.
+            </p>
+
+            <!-- Spinners Container - Easy to add more spinners -->
+            <div class="spinners-container" id="spinnersContainer">
+                <!-- Spinners will be generated by JavaScript -->
+            </div>
+
+            <!-- Result Display -->
+            <div class="result-container" id="resultContainer">
+                <p class="result-label">Your Identity Revealed</p>
+                <h2 class="result-name" id="resultName">—</h2>
+                <p class="result-origin" id="resultOrigin">Awaiting fate's decree...</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="generator-buttons">
+                <button class="btn btn-spin" id="spinBtn">Spin The Wheel of Fate</button>
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            </div>
+        </div>
+    </main>
+
+<script>
+(function() {
+    'use strict';
+
+    // ============================================
+    // EMBER COUNT - Change this number to add more or less fire particles
+    // Current: 30 (doubled from original 15)
+    // Recommended range: 10 (subtle) to 50 (intense)
+    // ============================================
+    const EMBER_COUNT = 30;
+    
+    // Create ember particles
+    const emberContainer = document.getElementById('emberContainer');
+    for (let i = 0; i < EMBER_COUNT; i++) {
+        const ember = document.createElement('div');
+        ember.className = 'ember';
+        ember.style.left = Math.random() * 100 + '%';
+        ember.style.animationDuration = (10 + Math.random() * 8) + 's';
+        ember.style.animationDelay = Math.random() * 8 + 's';
+        ember.style.width = (2 + Math.random() * 5) + 'px';
+        ember.style.height = ember.style.width;
+        emberContainer.appendChild(ember);
+    }
+
+    // ============================================
+    // EASY TO EDIT: Add your options here!
+    // Simply add new categories or modify existing ones
+    // ============================================
+    const SPINNER_CONFIG = {
+        // Each key becomes a spinner category
+        // Format: 'categoryKey': { label: 'Display Label', options: ['Option1', 'Option2', ...] }
+        
+        firstName: {
+            label: 'First Name',
+            options: [
+                'Arel','Bennen','Corin','Dallis','Emon','Farra','Garel','Henwick','Isley','Jorin',
+                'Ketha','Laran','Meya','Norrel','Orra','Pellin','Quinla','Rella','Soran','Talen',
+                'Ulven','Varin','Wessa','Yorin','Zalla','Avel','Brissa','Caelor','Delta','Enla',
+                'Fennic','Gara','Hallen','Illar','Jesra','Kelwin','Lysa','Marro','Nessa','Ollen',
+                'Pria','Rilven','Sella','Tarris','Unwen','Vessa','Weslor','Yalith','Zarael','Awen',
+                'Branth','Colra','Deryn','Elsar','Fira','Gellan','Harla','Iven','Jessa','Korrel',
+                'Leven','Mierin','Nalen','Olra','Pyrel','Relka','Sarnel','Tessa','Urin','Varel',
+                'Winna','Yora','Zerin','Asha','Brin','Caleen','Denro','Elwen','Fressa','Garron',
+                'Helia','Irin','Jenra','Kellan','Lera','Mistrel','Nior','Ora','Pellia','Rennar',
+                'Sarra','Tovin','Ulessa','Vallen','Wist','Yessa','Zinna','Arelia','Brendar',
+                'Collinara',
+                'Kres','Voran','Drath','Serrik','Jolven','Tharun','Korr','Velk','Drannis','Sorrik',
+                'Keln','Vallek','Trosk','Marrad','Dren','Kelth','Skarn','Voren','Jask','Thoss',
+                'Drevik','Vessar','Trenn','Kelros','Marrik','Kherron','Solvik','Travor','Kesslan',
+                'Rhalik','Vothar','Dannik','Skerr','Vosran','Karyesh','Dranel','Havrik','Vornas',
+                'Jerrik','Thovran','Varrek','Kossith','Drannor','Vashen','Sollik','Ravos','Krellar',
+                'Darrik','Ossar','Viskan','Serin','Kassha','Veyra','Drinna','Talin','Ossira',
+                'Yevra','Kessia','Thera','Malin','Sorya','Nethra','Vaska','Rinla','Jeyra','Shavra',
+                'Kelni','Vosria','Talyss','Orria','Vellin','Sarria','Drassa','Kireth','Thanya',
+                'Marris','Nelka','Vessra','Osseni','Teshra','Kyliss','Soreth','Jorna','Khelra',
+                'Velonni','Yashara','Drenna','Vellassa','Tareya','Rhenna','Skella','Kassrin',
+                'Travenna','Dorshia','Verrin','Ossya','Thalria','Sanna','Marethra','Kyrin',
+                'Othrel','Khassun','Dravenk','Tharvos','Kelnar','Zhorak','Vessun','Marrhul','Ossrak',
+                'Karthesh','Drunval','Thossun','Karrhet','Vornass','Desshul','Orrvak','Khirrel',
+                'Tharam','Nesshor','Varhesh','Dorrak','Keshrul','Talvorr','Drathul','Vesshor',
+                'Marrkul','Osshem','Khoriss','Tharrel','Vhalrek','Sorrath','Kelvass','Drulkan',
+                'Thavorn','Orshem','Marrhoss','Khessul','Vrakenn','Dalrath','Thossir','Neshral',
+                'Korrhun','Drakhur','Sarrkesh','Varrhel','Othmarr','Zhakir','Dravenar','Veshkar',
+                'Tharvun','Sherra','Vessara','Khelnis','Drissa','Othria','Neshka','Marrish',
+                'Vossira','Kelsha','Thalniss','Orithra','Khessia','Serhira','Varrin','Ashra',
+                'Tholiss','Vhelra','Ossenra','Neshya','Darissa','Yessha','Zhalra','Khorissa',
+                'Talsira','Merthra','Varniss','Orrhessa','Thirra','Khareen','Selvra','Ashera',
+                'Marressa','Vesshira','Jhalin','Dorsha','Kelrath','Oshalin','Yarra','Narliss',
+                'Veshal','Serrek','Mahria','Thoness','Yessra','Zarrin','Kesshra','Othla','Vreliss',
+                'Merrhira','Sharnath',
+                'Arlo','Venn','Mira','Jalen','Corrin','Renn','Oren','Jora','Mavin','Sela','Rovin',
+                'Kelna','Yara','Tharen','Cassi','Nerin','Velis','Orin','Dara','Toren','Selis',
+                'Pera','Levra','Henn','Mera','Allin','Kira','Dalen','Oris','Yensa','Marra',
+                'Sylen','Thraen','Olla','Verra','Delin','Isra','Wena','Saro','Lysar','Yassa',
+                'Corra',
+                'Vaelorian','Arcthelis','Seralynd','Orthellian','Maravelle','Caelistra',
+                'Dorthavian','Lysandrel','Vhoren','Reshalyn','Valcoran','Ysandria','Ellathor',
+                'Solyandra','Kirravon','Telyssia','Mavaryn','Drethalian','Calandria','Thalorian',
+                'Rhaelyse','Vorthalyn','Selvaris','Olyrienne','Renvoran','Issavre','Corindale',
+                'Aerossin','Verathiel','Rhaegen','Miravell','Elvaron','Veliscia','Tharnovel',
+                'Aeralyth','Orisse','Khorandel','Vaeryss','Illorin','Mavriel','Kassandrael',
+                'Dresthavir','Aerwynne','Solvarim','Yssavel','Corianth','Meralyth','Therosin',
+                'Avalyra','Vorthessan','Lysaviel','Calravon','Oriselle','Davarnel','Trissara',
+                'Vysandor','Eralyth','Salvaron','Illessia','Dornavell','Vaemira','Khorvess',
+                'Aralinde','Sorellan','Elavris','Vaethryn','Mirisar','Dantheris','Rhyssora',
+                'Corvalen','Telaniel','Maravoss','Solenvar','Nyssalia','Ariondar','Velissaen',
+                'Elandros','Ysoria','Thravess','Coriselle','Valtherin','Lysorin','Aerandrel',
+                'Myravel','Sorravian','Velrissia','Jovenar','Aracelle','Theralyth','Oryndrel',
+                'Vassaran','Ellorisse','Calvenor','Rhalyssa','Toraldir','Ysavron','Meriselle',
+                'Vornalyth','Eldassir','Sarynthia'
+            ]
+        },
+
+        origin: {
+            label: 'Place of Origin',
+            options: [
+                'Treesedge','Barrowheath','Dunmere','Windrow','Chalkbend','Oatmere',
+                'Grindleford','Threshton','Millspire','Hearthwick','Valepond',
+                'Ferralstead','Rowanholt','Whistlebank','Thistlemarch','Highoat',
+                'Mirefield','Lanternmere','Latchford','Harrowsdeep','Tillerfen',
+                'Dustgrove','Rumblehollow','Sunstaithe','Mossbarrow','Freywick',
+                'Greathorn','Emberfield','Oakhaven','Tressarun','Hillwash',
+                'Chalkreach','Riverhallow','Kettlebrook','Fenmarch','Siremeade',
+                'Wayfen','Stillbarrow','Wyrstead','Fieldthorn','Balecrest',
+                'Turnwyck','Cressmere','Woldsong','Pollenwick','Cragwash',
+                'Gullentop','Bristledown','Marshwall','Yorenfell','Plowrise',
+                'Wrenford','Grainvale','Latchmere','Foxlow','Mosslorn',
+                'Brambleholt','Stagfen','Welterun','Hushedge','Cressthorn',
+                'Oldmere','Tallowwick','Spryfen','Oatshade','Ferraldale',
+                'Hartholm','Ryehaven','Everchalk','Brindleholt','Tannorun',
+                'Dalehusk','Threshburn','Loomreach','Spindlefen','Ferralbridge',
+                'Westgrove','Wistledorn','Chalkbarrow','Farfen','Mosscreek',
+                'Goldmere','Dunnoway','Tallwick','Clearhollow','Saffronreach',
+                'Whitemere','Bramblen','Orinbank','Kestralrun','Fallowhaven',
+                'Wheatford','Brookshade','Tidingale','Virenstead','Harlothorn',
+                'Merribank','Clifffall','Spirefen','Vale\'s End'
+            ]
+        },
+
+        birthMonth: {
+            label: 'Birth Month',
+            options: [
+                'Firstmoon', 'Frostfall', 'Dawning', 'Bloomtide',
+                'Sunpeak', 'Highsummer', 'Harvestfall', 'Hearthtide',
+                'Mistmonth', 'Fading', 'Darknight', 'Yearsend'
+            ]
+        },
+
+        birthDay: {
+            label: 'Birth Day',
+            options: Array.from({length: 30}, (_, i) => `Day ${i + 1}`)
+        },
+
+        title: {
+            label: 'Title',
+            options: [
+                'The Brave', 'The Wise', 'The Swift', 'The Bold',
+                'The Silent', 'The Fierce', 'The Kind', 'The Wanderer',
+                'The Seeker', 'The Guardian', 'The Healer', 'The Flame Keeper'
+            ]
+        }
+    };
+
+    // ============================================
+    // DO NOT EDIT BELOW (unless you know what you're doing)
+    // ============================================
+
+    const spinnersContainer = document.getElementById('spinnersContainer');
+    const resultContainer = document.getElementById('resultContainer');
+    const resultName = document.getElementById('resultName');
+    const resultOrigin = document.getElementById('resultOrigin');
+    const spinBtn = document.getElementById('spinBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const particlesContainer = document.getElementById('particles');
+
+    let spinners = {};
+    let isSpinning = false;
+
+    const MYSTERY_TEXT = '✧ Mystery ✧';
+
+    // Initialize spinners from config
+    function initSpinners() {
+        spinnersContainer.innerHTML = '';
+        
+        Object.entries(SPINNER_CONFIG).forEach(([key, config]) => {
+            // Add Mystery as the first item (index 0)
+            const allOptions = [MYSTERY_TEXT, ...config.options];
+            
+            const group = document.createElement('div');
+            group.className = 'spinner-group';
+            group.innerHTML = `
+                <span class="spinner-label">${config.label}</span>
+                <div class="spinner-window">
+                    <div class="spinner-reel" id="reel-${key}">
+                        ${allOptions.map(opt => `<div class="spinner-item">${opt}</div>`).join('')}
+                    </div>
+                </div>
+            `;
+            spinnersContainer.appendChild(group);
+
+            spinners[key] = {
+                reel: document.getElementById(`reel-${key}`),
+                options: config.options, // Keep original options for spinning (excludes Mystery)
+                allOptions: allOptions,  // All options including Mystery
+                currentIndex: 0
+            };
+        });
+    }
+
+    // Create particle burst effect
+    function createParticleBurst(x, y) {
+        const particleCount = 20;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            const angle = (i / particleCount) * 360;
+            const distance = 100 + Math.random() * 100;
+            const tx = Math.cos(angle * Math.PI / 180) * distance;
+            const ty = Math.sin(angle * Math.PI / 180) * distance;
+            
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.setProperty('--tx', tx + 'px');
+            particle.style.setProperty('--ty', ty + 'px');
+            particle.style.background = Math.random() > 0.5 ? 
+                'var(--parchment-gold)' : 
+                Math.random() > 0.5 ? 'var(--molten-ember)' : 'var(--jade-glow)';
+            
+            particlesContainer.appendChild(particle);
+            
+            requestAnimationFrame(() => {
+                particle.classList.add('burst');
+            });
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 1000);
+        }
+    }
+
+    // Spin animation
+    async function spinAll() {
+        if (isSpinning) return;
+        isSpinning = true;
+        spinBtn.disabled = true;
+        resultContainer.classList.remove('revealed');
+
+        const spinDuration = 2000 + Math.random() * 1000;
+        const startTime = Date.now();
+
+        // Start spinning animation
+        Object.values(spinners).forEach(spinner => {
+            spinner.reel.classList.add('spinning');
+        });
+
+        // Animate reels
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            
+            Object.values(spinners).forEach(spinner => {
+                // Skip Mystery (index 0) during spinning animation
+                const randomIndex = Math.floor(Math.random() * spinner.options.length) + 1;
+                spinner.reel.style.transform = `translateY(-${randomIndex * 60}px)`;
+            });
+
+            if (elapsed < spinDuration) {
+                requestAnimationFrame(animate);
+            } else {
+                finishSpin();
+            }
+        };
+
+        requestAnimationFrame(animate);
+    }
+
+    function finishSpin() {
+        // Stop and pick final values
+        const results = {};
+        
+        Object.entries(spinners).forEach(([key, spinner]) => {
+            spinner.reel.classList.remove('spinning');
+            // Pick from original options (not Mystery), add 1 to skip Mystery at index 0
+            const finalIndex = Math.floor(Math.random() * spinner.options.length) + 1;
+            spinner.currentIndex = finalIndex;
+            spinner.reel.style.transform = `translateY(-${finalIndex * 60}px)`;
+            results[key] = spinner.allOptions[finalIndex];
+        });
+
+        // Display result
+        displayResult(results);
+        
+        // Particle burst
+        const rect = resultContainer.getBoundingClientRect();
+        createParticleBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+        isSpinning = false;
+        spinBtn.disabled = false;
+    }
+
+    function displayResult(results) {
+        // Build the result display based on available categories
+        const name = results.firstName || '—';
+        const origin = results.origin || 'Unknown';
+        
+        // Build origin string with any additional info
+        let originText = `of ${origin}`;
+        
+        // Add title if exists
+        if (results.title) {
+            originText = `${results.title}, ${originText}`;
+        }
+        
+        // Add birth info if exists
+        if (results.birthMonth || results.birthDay) {
+            const birthParts = [];
+            if (results.birthDay) birthParts.push(results.birthDay);
+            if (results.birthMonth) birthParts.push(results.birthMonth);
+            originText += ` • Born: ${birthParts.join(', ')}`;
+        }
+
+        resultName.textContent = name;
+        resultOrigin.textContent = originText;
+        
+        setTimeout(() => {
+            resultContainer.classList.add('revealed');
+        }, 100);
+    }
+
+    function reset() {
+        resultContainer.classList.remove('revealed');
+        resultName.textContent = '—';
+        resultOrigin.textContent = 'Awaiting fate\'s decree...';
+        
+        Object.values(spinners).forEach(spinner => {
+            spinner.reel.style.transform = 'translateY(0)';
+            spinner.currentIndex = 0;
+        });
+    }
+
+    // Event listeners
+    spinBtn.addEventListener('click', spinAll);
+    resetBtn.addEventListener('click', reset);
+
+    // Keyboard support
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !isSpinning) {
+            e.preventDefault();
+            spinAll();
+        }
+    });
+
+    // Initialize
+    initSpinners();
+})();
+</script>
+
+</body>
+</html>

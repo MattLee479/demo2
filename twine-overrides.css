@@ -1,0 +1,338 @@
+/* ==============================================
+   TWINE/HARLOWE OVERRIDES - Jade Pandora Theme
+   ============================================== */
+
+/* ===== ANIMATED BACKGROUND ===== */
+.cyoa-background {
+    position: fixed;
+    inset: 0;
+    background: var(--gradient-dark);
+    z-index: -2;
+}
+
+.cyoa-background::before {
+    content: '';
+    position: absolute;
+    top: 15%;          /* Move up/down: lower % = higher position */
+    left: 5%;          /* Move left/right: lower % = more left */
+    width: 800px;      /* BLOB SIZE: Increase for bigger blob */
+    height: 800px;     /* BLOB SIZE: Increase for bigger blob */
+    background: radial-gradient(circle, rgba(58, 167, 143, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glowPulse 5s ease-in-out infinite;
+}
+
+.cyoa-background::after {
+    content: '';
+    position: absolute;
+    bottom: 5%;        /* Move up/down: lower % = lower position */
+    right: 5%;         /* Move left/right: lower % = more right */
+    width: 700px;      /* BLOB SIZE: Increase for bigger blob */
+    height: 700px;     /* BLOB SIZE: Increase for bigger blob */
+    background: radial-gradient(circle, rgba(226, 88, 34, 0.18) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glowPulse 5s ease-in-out infinite 2.5s;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* ===== EMBER PARTICLES ===== */
+.ember-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.ember {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--molten-ember);
+    border-radius: 50%;
+    box-shadow: 0 0 6px 2px rgba(226, 88, 34, 0.8);
+    animation: emberFloat linear infinite;
+}
+
+@keyframes emberFloat {
+    0% {
+        transform: translateY(100vh) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* ===== BACK BUTTON ===== */
+.back-to-site {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: rgba(44, 44, 44, 0.9);
+    border: 1px solid var(--parchment-gold);
+    border-radius: 8px;
+    color: var(--parchment-gold);
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.back-to-site:hover {
+    background: rgba(226, 88, 34, 0.2);
+    border-color: var(--molten-ember);
+    color: var(--molten-ember);
+    box-shadow: 0 0 20px rgba(226, 88, 34, 0.4);
+    transform: translateX(-2px);
+}
+
+.back-to-site::before {
+    content: '←';
+    font-size: 18px;
+}
+
+/* ===== SCROLLING FIX (single scrollbar, works on all devices) ===== */
+html, body {
+    height: 100% !important;
+    overflow: hidden !important; /* prevents the outer page scrollbar */
+}
+
+
+/* ===== STORY CONTAINER ===== */
+tw-story {
+    display: block;
+
+    height: 100vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+
+    background: transparent !important;
+    color: var(--white-mist) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 18px !important;
+    line-height: 1.8 !important;
+    padding: 140px 24px 60px !important;
+}
+
+/* ===== PASSAGE STYLING ===== */
+tw-passage {
+    display: block;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(44, 44, 44, 0.95) 0%, rgba(13, 13, 13, 0.98) 100%);
+    border: 1px solid rgba(214, 198, 159, 0.2);
+    border-radius: 12px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(214, 198, 159, 0.1);
+    position: relative;
+}
+
+tw-passage::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--jade-glow), var(--molten-ember), transparent);
+    border-radius: 12px 12px 0 0;
+}
+
+/* ===== TYPOGRAPHY ===== */
+tw-passage h1, 
+tw-passage h2, 
+tw-passage h3 {
+    font-family: 'Cinzel Decorative', serif !important;
+    color: var(--parchment-gold) !important;
+    margin-bottom: 1rem;
+}
+
+tw-passage p {
+    color: var(--white-mist) !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* ===== LINKS / CHOICES ===== */
+tw-link, 
+.enchantment-link {
+    display: inline-block !important;
+    color: var(--jade-glow) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    padding: 12px 24px !important;
+    margin: 8px 4px !important;
+    background: rgba(58, 167, 143, 0.1) !important;
+    border: 2px solid var(--jade-glow) !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+}
+
+tw-link:hover, 
+.enchantment-link:hover {
+    background: rgba(58, 167, 143, 0.25) !important;
+    color: var(--white-mist) !important;
+    box-shadow: 0 0 25px rgba(58, 167, 143, 0.5) !important;
+    transform: translateY(-2px) !important;
+}
+
+tw-link:active,
+.enchantment-link:active {
+    transform: translateY(0) !important;
+}
+
+/* Special styling for important choices */
+tw-link[passage-name*="Pick"],
+tw-link[passage-name*="Chapel"] {
+    background: rgba(226, 88, 34, 0.15) !important;
+    border-color: var(--molten-ember) !important;
+    color: var(--molten-ember) !important;
+}
+
+tw-link[passage-name*="Pick"]:hover,
+tw-link[passage-name*="Chapel"]:hover {
+    background: rgba(226, 88, 34, 0.3) !important;
+    box-shadow: 0 0 25px rgba(226, 88, 34, 0.5) !important;
+    color: var(--white-mist) !important;
+}
+
+/* ===== SIDEBAR ===== */
+tw-sidebar {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    display: flex !important;
+    gap: 12px !important;
+    z-index: 9998 !important;
+}
+
+tw-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 44px !important;
+    height: 44px !important;
+    background: rgba(44, 44, 44, 0.9) !important;
+    border: 1px solid rgba(214, 198, 159, 0.3) !important;
+    border-radius: 50% !important;
+    color: var(--parchment-gold) !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+tw-icon:hover {
+    background: rgba(58, 167, 143, 0.2) !important;
+    border-color: var(--jade-glow) !important;
+    box-shadow: 0 0 15px rgba(58, 167, 143, 0.4) !important;
+}
+
+/* ===== DIALOG / MODALS ===== */
+tw-dialog {
+    background: linear-gradient(135deg, rgba(44, 44, 44, 0.98), rgba(13, 13, 13, 0.99)) !important;
+    border: 2px solid var(--parchment-gold) !important;
+    border-radius: 12px !important;
+    padding: 2rem !important;
+    color: var(--white-mist) !important;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8) !important;
+}
+
+tw-backdrop {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+tw-dialog input[type="text"] {
+    background: var(--obsidian-black) !important;
+    border: 1px solid var(--jade-glow) !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+    color: var(--white-mist) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+tw-dialog input[type="text"]:focus {
+    outline: none !important;
+    box-shadow: 0 0 15px rgba(58, 167, 143, 0.4) !important;
+}
+
+/* ===== EMPHASIS STYLES ===== */
+tw-passage em, 
+tw-passage i {
+    color: var(--jade-glow) !important;
+    font-style: italic;
+}
+
+tw-passage strong, 
+tw-passage b {
+    color: var(--parchment-gold) !important;
+    font-weight: 700;
+}
+
+/* ===== SPECIAL TEXT EFFECTS ===== */
+tw-passage [style*="color"] {
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* ===== BROKEN LINKS ===== */
+tw-broken-link {
+    color: #ff6b6b !important;
+    border-bottom: 2px dashed #ff6b6b !important;
+    cursor: not-allowed !important;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    tw-story {
+        padding: 80px 16px 40px !important;
+    }
+    
+    tw-passage {
+        padding: 2rem 1.5rem;
+    }
+    
+    .back-to-site {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+    
+    tw-sidebar {
+        top: 16px !important;
+        right: 16px !important;
+    }
+    
+    tw-icon {
+        width: 38px !important;
+        height: 38px !important;
+    }
+    
+    tw-link,
+    .enchantment-link {
+        display: block !important;
+        text-align: center !important;
+        margin: 10px 0 !important;
+    }
+}
